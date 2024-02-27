@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Visitor;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VisitorController extends Controller
 {
@@ -47,6 +48,22 @@ class VisitorController extends Controller
         Visitor::findOrFail($id)->delete();
         return response()->json(['message' => 'Visitor deleted successfully'], 200);
     }
+
+    public function downloadPDF()
+    {
+        // Obtener todos los visitantes de la base de datos
+        $visitors = Visitor::all();
+
+        // Iterar sobre cada visitante para calcular su generación
+        foreach ($visitors as $visitor) {
+            $generation = $this->calculateGeneration($visitor->birth_date);
+            $visitor->generation = $generation;
+        }
+
+        // Devolver los visitantes con la información de la generación
+        return response()->json($visitors);
+
+    }    
 
     // Función para calcular la generación basada en la fecha de nacimiento
     private function calculateGeneration($birthDate)

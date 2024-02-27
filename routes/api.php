@@ -36,4 +36,5 @@ Route::prefix('visitors')->group(function () {
     Route::get('/{id}', [VisitorController::class, 'show']);
     Route::put('/{id}', [VisitorController::class, 'update']);
     Route::delete('/{id}', [VisitorController::class, 'destroy']);
+    Route::get('/download-pdf', [VisitorController::class, 'downloadPDF']);
 });
